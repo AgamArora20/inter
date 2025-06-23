@@ -1,0 +1,9 @@
+this is the imputation before
+Age         177
+Cabin       687
+Embarked      2
+
+this is the imputation after
+Age         0
+Cabin       0
+Embarked    0
