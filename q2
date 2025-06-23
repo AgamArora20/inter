@@ -1,0 +1,28 @@
+import pandas as pd
+import numpy as np
+
+# Step 1: Load the dataset
+df = pd.read_csv("train.csv")  # Ensure the file is in the same directory
+
+# Step 2: Show missing values before imputation
+print("=== Missing Values Before Imputation ===")
+print(df.isnull().sum())
+
+# Step 3: Handle missing values
+
+# ➤ 'Age' (numerical): Fill missing values with median
+df['Age'].fillna(df['Age'].median(), inplace=True)
+
+# ➤ 'Cabin' (categorical): Fill missing values with a placeholder 'Unknown'
+df['Cabin'].fillna('Unknown', inplace=True)
+
+# ➤ 'Embarked' (categorical): Fill missing values with the most frequent value (mode)
+df['Embarked'].fillna(df['Embarked'].mode()[0], inplace=True)
+
+# Step 4: Verify that there are no missing values left
+print("\n=== Missing Values After Imputation ===")
+print(df.isnull().sum())
+
+# Step 5 (Optional): Show the first 5 rows of the cleaned dataset
+print("\n=== First 5 Rows After Cleaning ===")
+print(df.head())
