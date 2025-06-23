@@ -1,0 +1,34 @@
+import pandas as pd
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+
+# Load dataset
+df = pd.read_csv("train.csv")
+
+# Impute missing values
+df['Age'].fillna(df['Age'].median(), inplace=True)
+df['Cabin'].fillna('Unknown', inplace=True)
+df['Embarked'].fillna(df['Embarked'].mode()[0], inplace=True)
+
+# Encode categorical features
+df['Sex'] = df['Sex'].map({'male': 1, 'female': 0})
+df = pd.get_dummies(df, columns=['Embarked', 'Pclass'], drop_first=True)
+
+# Select numerical features to normalize/standardize
+numerical_cols = ['Age', 'Fare', 'SibSp', 'Parch']
+
+# ====== NORMALIZATION (MinMaxScaler) ======
+minmax_scaler = MinMaxScaler()
+df_normalized = df.copy()
+df_normalized[numerical_cols] = minmax_scaler.fit_transform(df[numerical_cols])
+
+# ====== STANDARDIZATION (StandardScaler) ======
+standard_scaler = StandardScaler()
+df_standardized = df.copy()
+df_standardized[numerical_cols] = standard_scaler.fit_transform(df[numerical_cols])
+
+# Show results
+print("=== Normalized Features ===")
+print(df_normalized[numerical_cols].head())
+
+print("\n=== Standardized Features ===")
+print(df_standardized[numerical_cols].head())
