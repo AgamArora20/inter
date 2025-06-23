@@ -1,0 +1,31 @@
+What Changed During Imputation?
+
+| Feature   | Data Type   | Imputation Used      | Reason                                        |
+|-----------|-------------|----------------------|-----------------------------------------------|
+| Age       | Numerical   | Median               | Robust to outliers                            |
+| Cabin     | Categorical | Filled with 'Unknown'| Too many missing values to guess accurately   |
+| Embarked  | Categorical | Mode                 | Only 2 missing; mode is most logical choice   |
+
+
+Output (Before & After Encoding)
+
+Before Encoding:
+| Sex   | Embarked | Pclass |
+|-------|----------|--------|
+| male  | S        | 3      |
+| female| C        | 1      |
+
+After Encoding:
+| Sex | Embarked_Q | Embarked_S | Pclass_2 | Pclass_3 |
+|-----|------------|------------|----------|----------|
+| 1   | 0          | 1          | 0        | 1        |
+| 0   | 0          | 0          | 0        | 0        |
+
+
+What Changed During Encoding?
+
+| Feature   | Original Type       | Encoding Used     | Reason                                      |
+|-----------|---------------------|-------------------|---------------------------------------------|
+| Sex       | Binary Categorical  | Label Encoding    | Only two values: 'male' and 'female'        |
+| Embarked  | Nominal Categorical | One-Hot Encoding  | No ordinal relationship between categories  |
+| Pclass    | Ordinal Categorical | One-Hot Encoding  | To avoid false numerical assumptions        |
