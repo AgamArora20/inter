@@ -1,0 +1,23 @@
+import pandas as pd
+
+# Load the dataset
+df = pd.read_csv("train.csv")
+
+# Handle missing values (repeating from previous steps for completeness)
+df['Age'].fillna(df['Age'].median(), inplace=True)
+df['Cabin'].fillna('Unknown', inplace=True)
+df['Embarked'].fillna(df['Embarked'].mode()[0], inplace=True)
+
+# Step 1: Label Encoding for 'Sex' (Male/Female → 1/0)
+df['Sex'] = df['Sex'].map({'male': 1, 'female': 0})
+
+# Step 2: One-Hot Encoding for 'Embarked' and 'Pclass'
+df = pd.get_dummies(df, columns=['Embarked', 'Pclass'], drop_first=True)
+
+# Step 3 (optional): Preview updated DataFrame
+print("=== First 5 Rows After Encoding ===")
+print(df.head())
+
+# Step 4 (optional): Show updated column names
+print("\n=== Updated Column Names ===")
+print(df.columns.tolist())
