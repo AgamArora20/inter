@@ -1,0 +1,45 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the dataset
+df = pd.read_csv("train.csv")
+
+# Impute missing values
+df['Age'].fillna(df['Age'].median(), inplace=True)
+df['Cabin'].fillna('Unknown', inplace=True)
+df['Embarked'].fillna(df['Embarked'].mode()[0], inplace=True)
+
+# Encode categorical variables
+df['Sex'] = df['Sex'].map({'male': 1, 'female': 0})
+df = pd.get_dummies(df, columns=['Embarked', 'Pclass'], drop_first=True)
+
+# List of numerical columns to check for outliers
+numerical_cols = ['Age', 'Fare', 'SibSp', 'Parch']
+
+# Step 1: Visualize outliers using boxplots
+plt.figure(figsize=(12, 8))
+for i, col in enumerate(numerical_cols, 1):
+    plt.subplot(2, 2, i)
+    sns.boxplot(x=df[col])
+    plt.title(f'Boxplot of {col}')
+plt.tight_layout()
+plt.show()
+
+# Step 2: Remove outliers using the IQR method
+def remove_outliers_iqr(data, column):
+    Q1 = data[column].quantile(0.25)
+    Q3 = data[column].quantile(0.75)
+    IQR = Q3 - Q1
+    lower = Q1 - 1.5 * IQR
+    upper = Q3 + 1.5 * IQR
+    return data[(data[column] >= lower) & (data[column] <= upper)]
+
+# Apply outlier removal to each numerical column
+for col in numerical_cols:
+    df = remove_outliers_iqr(df, col)
+
+# Step 3: Display shape and a few rows after cleaning
+print("\n✅ Shape after outlier removal:", df.shape)
+print("\n✅ First 5 rows of cleaned dataset:")
+print(df.head())
