@@ -1,0 +1,39 @@
+# Import necessary libraries
+import pandas as pd
+import numpy as np
+
+# Load the Titanic dataset
+df = pd.read_csv("train.csv")  # Make sure the file is in your working directory
+
+# 1. Show basic structure
+print("===== Dataset Shape =====")
+print(df.shape)  # Rows x Columns
+
+print("\n===== Column Names and Data Types =====")
+print(df.dtypes)
+
+# 2. Check for missing values
+print("\n===== Missing Values in Each Column =====")
+print(df.isnull().sum())
+
+# 3. Show summary statistics for numeric columns
+print("\n===== Numeric Summary Statistics =====")
+print(df.describe())
+
+# 4. Show summary statistics for all columns (including object types)
+print("\n===== Full Column Summary =====")
+print(df.describe(include='all'))
+
+# 5. View first 5 rows of the dataset
+print("\n===== First 5 Rows of the Dataset =====")
+print(df.head())
+
+# 6. View last 5 rows (optional)
+print("\n===== Last 5 Rows of the Dataset =====")
+print(df.tail())
+
+# 7. Unique values in categorical columns (optional but useful)
+categorical_cols = df.select_dtypes(include='object').columns
+print("\n===== Unique values in categorical columns =====")
+for col in categorical_cols:
+    print(f"{col}: {df[col].unique()}")
