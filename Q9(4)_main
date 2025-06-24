@@ -1,0 +1,33 @@
+**1. Survival Trends by Gender and Class**
+- Females had a significantly higher survival rate than males.
+- Passengers from 1st class had the highest survival rate, followed by 2nd class, then 3rd class.
+- This suggests **gender and socio-economic status** strongly influenced survival.
+
+**2. Fare Patterns and Outliers**
+- Most fares were concentrated under 50 units.
+- A few passengers paid extremely high fares (e.g., over 500) — clear **outliers**.
+- These high fares are typically associated with 1st class passengers.
+
+**3. Age Distribution Insights**
+- The majority of passengers were aged between 20 and 40 years.
+- Some children and elderly survived — possibly due to rescue prioritization.
+- **Missing values in Age** need to be handled (e.g., using median imputation).
+
+**4. Correlation Observations**
+- `Fare` is **negatively correlated** with `Pclass` (i.e., higher class → higher fare).
+- `SibSp` and `Parch` show positive correlation — indicating passengers often traveled with family.
+- `Survived` is:
+  - **Positively correlated** with `Fare` (wealthier → more likely to survive).
+  - **Negatively correlated** with `Pclass` (lower class → less likely to survive).
+
+**5. Outliers Detected via Boxplots**
+- `Fare` and `Age` contain visible outliers.
+- `SibSp` shows rare cases with up to 8 siblings/spouses onboard — unusual travel groups.
+
+**6. General Trends**
+- Passengers with family onboard had better chances of survival.
+- Solo travelers in 3rd class had the lowest survival rate.
+- The dataset has **skewness** and **missing values** that must be addressed before modeling.
+
+**Conclusion:**
+The dataset shows clear social and economic biases in survival. Variables like **Sex**, **Pclass**, and **Fare** are key predictors. Anomalies like high fares and large families may influence model outcomes if not treated properly.
