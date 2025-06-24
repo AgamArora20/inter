@@ -1,0 +1,12 @@
+import pandas as pd
+
+# Load the Titanic dataset
+df = pd.read_csv("train.csv")
+
+# Display summary statistics for numerical columns
+print("📌 Summary Statistics:\n")
+print(df.describe().T)
+
+# Display median separately (not included in describe())
+print("\n📌 Median of Numerical Columns:\n")
+print(df.median(numeric_only=True))
