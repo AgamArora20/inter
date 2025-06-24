@@ -1,0 +1,29 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load Titanic dataset
+df = pd.read_csv("train.csv")
+
+# List of numerical columns
+numeric_cols = df.select_dtypes(include=['int64', 'float64']).columns.tolist()
+
+# 📊 Plot Histograms
+plt.figure(figsize=(16, 10))
+for i, col in enumerate(numeric_cols, 1):
+    plt.subplot(3, 3, i)
+    plt.hist(df[col].dropna(), bins=30, color='skyblue', edgecolor='black')
+    plt.title(f'Histogram of {col}')
+plt.tight_layout()
+plt.suptitle("Histograms of Numerical Features", fontsize=16, y=1.02)
+plt.show()
+
+# 📦 Plot Boxplots
+plt.figure(figsize=(16, 10))
+for i, col in enumerate(numeric_cols, 1):
+    plt.subplot(3, 3, i)
+    sns.boxplot(x=df[col], color='lightgreen')
+    plt.title(f'Boxplot of {col}')
+plt.tight_layout()
+plt.suptitle("Boxplots of Numerical Features", fontsize=16, y=1.02)
+plt.show()
