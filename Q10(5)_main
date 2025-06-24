@@ -1,0 +1,42 @@
+**1. Survived**
+- The target variable shows class imbalance: more passengers died than survived.
+- Visuals like bar plots and pairplots show that survival is highly dependent on **gender** and **class**.
+
+**2. Pclass (Passenger Class)**
+- Majority of passengers were from **3rd class**, and they had the lowest survival rate.
+- Higher survival observed in **1st class**, visible in both bar plots and survival overlays.
+
+**3. Sex**
+- **Females had a much higher survival rate** than males.
+- Visuals clearly highlight gender-based priority during rescue operations.
+
+**4. Age**
+- Distribution is skewed toward younger passengers (20–40 years most common).
+- **Boxplots show outliers**, and missing values are present in this column.
+- Children under 10 had better survival odds compared to other age groups.
+
+**5. Fare**
+- **Highly skewed**, with a few passengers paying extremely high fares (clear outliers).
+- Boxplot shows long upper tail and outliers.
+- Higher fares are associated with 1st class and greater chance of survival.
+
+**6. SibSp (Siblings/Spouses Aboard)**
+- Most passengers had 0 or 1 sibling/spouse.
+- Larger family sizes (≥4) are rare and may reduce survival chances.
+- Boxplots show some anomalies, such as passengers with up to 8 siblings/spouses.
+
+**7. Parch (Parents/Children Aboard)**
+- Similar to SibSp, most passengers had 0 parents/children.
+- Those traveling with small families (1–2) had slightly better survival rates than those alone.
+
+**8. Embarked**
+- Most passengers embarked from **Southampton (S)**.
+- Passengers from **Cherbourg (C)** had higher survival rates, possibly due to class distribution.
+
+**9. Correlation Matrix Insights**
+- `Fare` and `Pclass` are strongly negatively correlated.
+- `Survived` has a weak positive correlation with `Fare` and negative with `Pclass`.
+- `SibSp` and `Parch` show a small positive correlation (traveling with family).
+
+**Conclusion:**
+Visual analysis reveals strong survival links with **Sex**, **Pclass**, and **Fare**. Outliers and skewed distributions need preprocessing. These feature-level insights guide us in selecting, transforming, and engineering features for better model accuracy.
