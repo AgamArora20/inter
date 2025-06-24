@@ -1,0 +1,24 @@
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the Titanic dataset
+df = pd.read_csv("Titanic-Dataset.csv")
+
+# Drop columns with all NaN values
+df_clean = df.dropna(axis=1, how='all')
+
+# Select valid numerical columns
+numeric_cols = df_clean.select_dtypes(include=['int64', 'float64']).columns.tolist()
+
+# Correlation Matrix
+correlation_matrix = df_clean[numeric_cols].corr()
+plt.figure(figsize=(10, 8))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+plt.title("Correlation Matrix of Numerical Features")
+plt.show()
+
+# Pairplot
+sns.pairplot(df_clean[numeric_cols].dropna())
+plt.suptitle("Pairplot of Numerical Features", y=1.02)
+plt.show()
