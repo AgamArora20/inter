@@ -1,0 +1,24 @@
+1. Import & Preprocess the Dataset
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+Importing the Datase
+# Load the dataset
+df = pd.read_csv("housing.csv")
+
+# Display the first few rows
+print(df.head())
+
+
+Basic Info and Summary
+# Dataset structure
+df.info()
+
+# Statistical summary
+df.describe()
+
+# Check for duplicates
+print("Duplicates:", df.duplicated().sum())
