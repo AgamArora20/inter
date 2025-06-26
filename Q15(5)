@@ -1,0 +1,23 @@
+Identify the Most Influential Feature
+# Correlation with target
+correlations = df.corr()['price'].drop('price')
+top_feature = correlations.abs().sort_values(ascending=False).index[0]
+
+print("Top correlated feature with price:", top_feature)
+
+Plot Regression Line for That Feature
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Scatter + Regression line
+plt.figure(figsize=(8, 6))
+sns.regplot(x=df[top_feature], y=df['price'], line_kws={"color": "red"})
+plt.title(f"Regression Line: Price vs {top_feature}")
+plt.xlabel(top_feature)
+plt.ylabel("Price")
+plt.grid(True)
+plt.show()
+
+Interpret Coefficients
+coefficients = pd.Series(model.coef_, index=X.columns)
+print(coefficients.sort_values(key=abs, ascending=False).head())
