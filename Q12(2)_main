@@ -1,0 +1,20 @@
+Step-by-Step
+from sklearn.model_selection import train_test_split
+
+# 1️⃣ Separate features and target
+# Assume 'price' is the target column (adjust if your dataset uses a different name)
+X = df_scaled.drop('price', axis=1)
+y = df_scaled['price']
+
+# 2️⃣ Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,       # 80% training, 20% testing
+    random_state=42      # for reproducibility
+)
+
+# 3️⃣ Print shapes to verify
+print("X_train shape:", X_train.shape)
+print("X_test shape:", X_test.shape)
+print("y_train shape:", y_train.shape)
+print("y_test shape:", y_test.shape)
