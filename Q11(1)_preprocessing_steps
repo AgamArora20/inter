@@ -1,0 +1,30 @@
+Rename Columns (if needed)
+df.columns = df.columns.str.strip().str.lower().str.replace(" ", "_")
+
+Handle Missing Values
+# Check missing values
+print(df.isnull().sum())
+
+# Fill numeric columns with median
+for col in df.select_dtypes(include=['float64', 'int64']).columns:
+    df[col].fillna(df[col].median(), inplace=True)
+
+# Drop rows with too many missing or non-recoverable values
+df.dropna(inplace=True)
+
+Encode Categorical Variables
+# Encode categorical columns (if any)
+df = pd.get_dummies(df, drop_first=True)
+
+Feature Scaling (optional for ML models)
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+scaled_features = scaler.fit_transform(df)
+
+# Convert back to DataFrame
+df_scaled = pd.DataFrame(scaled_features, columns=df.columns)
+
+Final Output
+print("Preprocessed dataset shape:", df_scaled.shape)
+df_scaled.head()
