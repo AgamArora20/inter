@@ -1,0 +1,47 @@
+Evaluate with confusion matrix, precision, recall, ROC-AUC.
+
+Required Libraries
+from sklearn.metrics import (
+    confusion_matrix, classification_report, roc_auc_score,
+    roc_curve, ConfusionMatrixDisplay
+)
+import matplotlib.pyplot as plt
+
+Evaluation Code
+# 🔹 Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+print("📊 Confusion Matrix:\n", cm)
+
+# 🔹 Classification Report (includes precision, recall, f1-score)
+print("\n📋 Classification Report:\n", classification_report(y_test, y_pred))
+
+# 🔹 ROC-AUC Score
+y_pred_prob = model.predict_proba(X_test)[:, 1]  # Get probabilities for class 1
+roc_auc = roc_auc_score(y_test, y_pred_prob)
+print(f"\n🎯 ROC-AUC Score: {roc_auc:.4f}")
+
+Plot ROC Curve
+# Compute ROC curve
+fpr, tpr, thresholds = roc_curve(y_test, y_pred_prob)
+
+plt.figure(figsize=(8, 6))
+plt.plot(fpr, tpr, color='blue', label=f'ROC Curve (AUC = {roc_auc:.2f})')
+plt.plot([0, 1], [0, 1], color='red', linestyle='--')
+plt.xlabel("False Positive Rate")
+plt.ylabel("True Positive Rate")
+plt.title("ROC Curve - Logistic Regression")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+Example Output (Hypothetical)
+📊 Confusion Matrix:
+[[70  2]
+ [ 1 41]]
+
+📋 Classification Report:
+              precision    recall  f1-score   support
+           0       0.99      0.97      0.98        72
+           1       0.95      0.98      0.96        42
+
+🎯 ROC-AUC Score: 0.9952
