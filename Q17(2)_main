@@ -1,0 +1,37 @@
+Train/Test Split + Standardization
+
+Import Required Libraries
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+Load & Preprocess Data
+# Load dataset
+df = pd.read_csv('data.csv')
+
+# Drop unnecessary columns
+df.drop(['id', 'Unnamed: 32'], axis=1, inplace=True)
+
+# Encode diagnosis: M = 1 (Malignant), B = 0 (Benign)
+df['diagnosis'] = df['diagnosis'].map({'M': 1, 'B': 0})
+
+Split Features and Target
+X = df.drop('diagnosis', axis=1)  # Features
+y = df['diagnosis']               # Target
+
+Train/Test Split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y,
+    test_size=0.2,         # 20% for testing
+    random_state=42,       # for reproducibility
+    stratify=y             # keeps class balance
+)
+
+Standardize Features
+scaler = StandardScaler()
+
+# Fit only on training data
+X_train = scaler.fit_transform(X_train)
+
+# Transform both training and test data
+X_test = scaler.transform(X_test)
