@@ -1,0 +1,35 @@
+Fit a Logistic Regression Model (Binary Classification)
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+# 1️⃣ Initialize the model
+model = LogisticRegression(random_state=42)
+
+# 2️⃣ Train the model on the training data
+model.fit(X_train, y_train)
+
+# 3️⃣ Make predictions on the test data
+y_pred = model.predict(X_test)
+
+# 4️⃣ Evaluate the model
+acc = accuracy_score(y_test, y_pred)
+cm = confusion_matrix(y_test, y_pred)
+report = classification_report(y_test, y_pred)
+
+# 5️⃣ Print results
+print("✅ Accuracy:", acc)
+print("\n📊 Confusion Matrix:\n", cm)
+print("\n📋 Classification Report:\n", report)
+
+Example Output (hypothetical)
+✅ Accuracy: 0.9737
+
+📊 Confusion Matrix:
+[[71  1]
+ [ 2 40]]
+
+📋 Classification Report:
+              precision    recall  f1-score   support
+           0       0.97      0.99      0.98        72
+           1       0.98      0.95      0.96        42
