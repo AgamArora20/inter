@@ -1,0 +1,29 @@
+Sigmoid Function Explanation
+//In Logistic Regression, the sigmoid (logistic) function converts linear model output (any real number) into a probability between 0 and 1.
+
+Example:
+import numpy as np
+
+def sigmoid(z):
+    return 1 / (1 + np.exp(-z))
+
+print(sigmoid(0))    # 0.5
+print(sigmoid(2))    # ~0.88
+print(sigmoid(-2))   # ~0.12
+
+Tune Threshold in Logistic Regression
+Step-by-Step Code to Tune Threshold
+import numpy as np
+from sklearn.metrics import confusion_matrix, classification_report
+
+# Get predicted probabilities for class 1
+y_probs = model.predict_proba(X_test)[:, 1]
+
+# Custom threshold
+threshold = 0.4  # try different values like 0.3, 0.6 etc.
+y_pred_custom = (y_probs >= threshold).astype(int)
+
+# Evaluate
+print(f"Threshold: {threshold}")
+print("\n📊 Confusion Matrix:\n", confusion_matrix(y_test, y_pred_custom))
+print("\n📋 Classification Report:\n", classification_report(y_test, y_pred_custom))
