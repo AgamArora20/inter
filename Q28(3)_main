@@ -1,0 +1,59 @@
+Visualize decision boundary using 2D data.
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.svm import SVC
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
+
+# Step 1: Load the dataset
+df = pd.read_csv("breast-cancer.csv")  # Change if filename differs
+
+# Step 2: Drop 'id' column if present
+if 'id' in df.columns:
+    df = df.drop(columns=['id'])
+
+# Step 3: Encode target ('diagnosis') column: M = 1, B = 0
+le = LabelEncoder()
+df['diagnosis'] = le.fit_transform(df['diagnosis'])
+
+# Step 4: Choose 2 features for 2D visualization
+features = ['radius_mean', 'texture_mean']  # You can try other pairs too
+X = df[features]
+y = df['diagnosis']
+
+# Step 5: Normalize
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Step 6: Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Step 7: Fit SVM with linear and RBF kernel
+models = {
+    'Linear Kernel': SVC(kernel='linear'),
+    'RBF Kernel': SVC(kernel='rbf')
+}
+
+# Step 8: Visualize decision boundaries
+h = 0.01  # Mesh step
+x_min, x_max = X_scaled[:, 0].min() - 1, X_scaled[:, 0].max() + 1
+y_min, y_max = X_scaled[:, 1].min() - 1, X_scaled[:, 1].max() + 1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                     np.arange(y_min, y_max, h))
+
+for name, model in models.items():
+    model.fit(X_train, y_train)
+    Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
+    Z = Z.reshape(xx.shape)
+
+    plt.figure(figsize=(8, 6))
+    plt.contourf(xx, yy, Z, cmap=plt.cm.Paired, alpha=0.3)
+    scatter = plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=y, cmap=plt.cm.Set1, edgecolor='k')
+    plt.xlabel(features[0])
+    plt.ylabel(features[1])
+    plt.title(f"SVM Decision Boundary - {name}")
+    plt.legend(handles=scatter.legend_elements()[0], labels=["Benign (0)", "Malignant (1)"])
+    plt.grid(True)
+    plt.show()
