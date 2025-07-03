@@ -1,0 +1,31 @@
+Step-by-Step: Normalize Features (Iris Dataset)
+
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+
+# Load dataset
+df = pd.read_csv("Iris.csv")  # Replace with the correct path if needed
+
+# Drop non-feature columns if present (e.g., Id)
+if 'Id' in df.columns:
+    df = df.drop(columns=['Id'])
+
+# Select features (exclude target column)
+features = df.drop('Species', axis=1)
+target = df['Species']
+
+# Apply Min-Max Normalization
+scaler = MinMaxScaler()
+normalized_features = pd.DataFrame(scaler.fit_transform(features), columns=features.columns)
+
+# Combine normalized features with target
+normalized_df = pd.concat([normalized_features, target], axis=1)
+
+# Display the normalized dataframe
+print(normalized_df.head())
+
+
+What This Does:
+	•	Uses MinMaxScaler to scale all feature values between 0 and 1.
+	•	Keeps the Species column as the classification target.
+	•	Works directly with the Iris dataset.
