@@ -1,0 +1,50 @@
+KNN Evaluation with Accuracy & Confusion Matrix
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
+
+# Load dataset
+df = pd.read_csv("Iris.csv")
+
+# Drop ID column if it exists
+if 'Id' in df.columns:
+    df = df.drop(columns=['Id'])
+
+# Split into features and target
+X = df.drop('Species', axis=1)
+y = df['Species']
+
+# Normalize features
+scaler = MinMaxScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# KNN model with best K (you can change K as needed)
+knn = KNeighborsClassifier(n_neighbors=3)
+knn.fit(X_train, y_train)
+
+# Predictions
+y_pred = knn.predict(X_test)
+
+# Accuracy
+accuracy = accuracy_score(y_test, y_pred)
+print(f"Accuracy: {accuracy:.2f}")
+
+# Confusion Matrix
+cm = confusion_matrix(y_test, y_pred, labels=knn.classes_)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=knn.classes_)
+disp.plot(cmap="Blues")
+plt.title("Confusion Matrix")
+plt.show()
+
+
+Output Includes:
+	•	Model accuracy score
+	•	Confusion matrix displayed with labels (Setosa, Versicolor, Virginica)
+	•	Easy to interpret model performance visually
