@@ -1,0 +1,49 @@
+Hyperparameter Tuning for SVM (RBF Kernel)
+
+import pandas as pd
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report, accuracy_score
+
+# Step 1: Load dataset
+df = pd.read_csv("breast-cancer.csv")  # Adjust filename if needed
+
+# Step 2: Preprocessing
+if 'id' in df.columns:
+    df = df.drop(columns=['id'])
+
+# Encode target (diagnosis): M = 1, B = 0
+le = LabelEncoder()
+df['diagnosis'] = le.fit_transform(df['diagnosis'])
+
+# Features and target
+X = df.drop('diagnosis', axis=1)
+y = df['diagnosis']
+
+# Scale features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Step 3: Hyperparameter grid
+param_grid = {
+    'C': [0.1, 1, 10, 100],         # Regularization strength
+    'gamma': [0.01, 0.1, 1, 10],    # Kernel coefficient
+    'kernel': ['rbf']
+}
+
+# Step 4: Grid search with cross-validation
+grid = GridSearchCV(SVC(), param_grid, refit=True, verbose=1, cv=5)
+grid.fit(X_train, y_train)
+
+# Step 5: Best parameters
+print("✅ Best Parameters Found:")
+print(grid.best_params_)
+
+# Step 6: Evaluate on test set
+y_pred = grid.predict(X_test)
+print("\n✅ Accuracy:", accuracy_score(y_test, y_pred))
+print("\n✅ Classification Report:\n", classification_report(y_test, y_pred))
