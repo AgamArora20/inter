@@ -1,0 +1,58 @@
+Try Multiple K Values (with Accuracy Plot
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score
+
+# Load dataset
+df = pd.read_csv("Iris.csv")
+
+# Drop ID column if exists
+if 'Id' in df.columns:
+    df = df.drop(columns=['Id'])
+
+# Features and target
+X = df.drop('Species', axis=1)
+y = df['Species']
+
+# Normalize features
+scaler = MinMaxScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Try different values of k
+k_values = list(range(1, 21))
+accuracies = []
+
+for k in k_values:
+    knn = KNeighborsClassifier(n_neighbors=k)
+    knn.fit(X_train, y_train)
+    y_pred = knn.predict(X_test)
+    acc = accuracy_score(y_test, y_pred)
+    accuracies.append(acc)
+
+# Plotting
+plt.figure(figsize=(10, 6))
+plt.plot(k_values, accuracies, marker='o')
+plt.title("Accuracy vs. Number of Neighbors (K)")
+plt.xlabel("K")
+plt.ylabel("Accuracy")
+plt.xticks(k_values)
+plt.grid(True)
+plt.show()
+
+# Print the best K
+best_k = k_values[accuracies.index(max(accuracies))]
+print(f"Best K value: {best_k} with accuracy: {max(accuracies):.2f}")
+
+
+What It Does:
+	•	Tries K values from 1 to 20
+	•	Trains and evaluates model for each
+	•	Plots Accuracy vs K
+	•	Shows the best K value based on test accuracy
