@@ -1,0 +1,51 @@
+Train SVM with Linear & RBF Kernelsimport pandas as pd
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report
+
+# Step 1: Load dataset
+df = pd.read_csv("breast-cancer.csv")  # Change filename if needed
+
+# Step 2: Drop ID column if present
+if 'id' in df.columns:
+    df = df.drop(columns=['id'])
+
+# Step 3: Encode target labels (diagnosis: M = malignant, B = benign)
+le = LabelEncoder()
+df['diagnosis'] = le.fit_transform(df['diagnosis'])  # M = 1, B = 0
+
+# Step 4: Features and target
+X = df.drop('diagnosis', axis=1)
+y = df['diagnosis']
+
+# Step 5: Standardize features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Step 6: Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Step 7: Train SVM with Linear kernel
+svm_linear = SVC(kernel='linear')
+svm_linear.fit(X_train, y_train)
+y_pred_linear = svm_linear.predict(X_test)
+
+# Step 8: Train SVM with RBF kernel
+svm_rbf = SVC(kernel='rbf')
+svm_rbf.fit(X_train, y_train)
+y_pred_rbf = svm_rbf.predict(X_test)
+
+# Step 9: Evaluation
+print("📌 SVM with Linear Kernel:")
+print("Accuracy:", accuracy_score(y_test, y_pred_linear))
+print(classification_report(y_test, y_pred_linear))
+
+print("\n📌 SVM with RBF Kernel:")
+print("Accuracy:", accuracy_score(y_test, y_pred_rbf))
+print(classification_report(y_test, y_pred_rbf))
+
+
+Output:
+	•	Accuracy for both kernels
+	•	Precision, recall, F1-score using classification_report
