@@ -1,0 +1,34 @@
+Load and prepare a dataset for binary classification.
+
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+from sklearn.model_selection import train_test_split
+
+# Step 1: Load the dataset
+df = pd.read_csv("breast-cancer.csv")  # Replace with your actual filename if different
+
+# Step 2: Display basic info
+print("Dataset Shape:", df.shape)
+print("\nData Types:\n", df.dtypes)
+print("\nMissing Values:\n", df.isnull().sum())
+print("\nFirst 5 Rows:\n", df.head())
+
+# Step 3: Encode categorical target if needed
+if df['diagnosis'].dtype == 'object':
+    le = LabelEncoder()
+    df['diagnosis'] = le.fit_transform(df['diagnosis'])  # 0 = benign, 1 = malignant
+
+# Step 4: Drop irrelevant columns (e.g., ID)
+if 'id' in df.columns:
+    df = df.drop(columns=['id'])
+
+# Step 5: Separate features and target
+X = df.drop('diagnosis', axis=1)
+y = df['diagnosis']
+
+# Step 6: Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Check output
+print("\nTrain shape:", X_train.shape)
+print("Test shape:", X_test.shape)
