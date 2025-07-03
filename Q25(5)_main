@@ -1,0 +1,58 @@
+Visualize KNN Decision Boundaries (2 Features Only)
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+
+# Load dataset
+df = pd.read_csv("Iris.csv")
+
+# Drop ID if present
+if 'Id' in df.columns:
+    df = df.drop(columns=['Id'])
+
+# Use only two features for 2D visualization
+features = ['PetalLengthCm', 'PetalWidthCm']  # You can try others too
+X = df[features]
+y = df['Species']
+
+# Normalize
+scaler = MinMaxScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Train KNN
+knn = KNeighborsClassifier(n_neighbors=5)
+knn.fit(X_train, y_train)
+
+# Mesh grid for decision boundary
+h = .02  # step size in the mesh
+x_min, x_max = X_scaled[:, 0].min() - 0.1, X_scaled[:, 0].max() + 0.1
+y_min, y_max = X_scaled[:, 1].min() - 0.1, X_scaled[:, 1].max() + 0.1
+xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
+                     np.arange(y_min, y_max, h))
+Z = knn.predict(np.c_[xx.ravel(), yy.ravel()])
+Z = Z.reshape(xx.shape)
+
+# Plotting
+plt.figure(figsize=(10, 6))
+plt.contourf(xx, yy, Z, cmap=plt.cm.Pastel2, alpha=0.8)
+scatter = plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=pd.Categorical(y).codes, edgecolor='k', cmap=plt.cm.Set1)
+plt.xlabel(features[0])
+plt.ylabel(features[1])
+plt.title("KNN Decision Boundary (k=5)")
+plt.legend(handles=scatter.legend_elements()[0], labels=df['Species'].unique())
+plt.grid(True)
+plt.show()
+
+
+
+What It Does:
+	•	Uses PetalLengthCm and PetalWidthCm for clear separation.
+	•	Draws decision regions using contourf.
+	•	Plots data points colored by class.
