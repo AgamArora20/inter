@@ -1,0 +1,34 @@
+KNN Classifier on Iris Dataset
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import classification_report, accuracy_score
+
+# Step 1: Load Dataset
+df = pd.read_csv("Iris.csv")  # Replace with correct path
+
+# Drop 'Id' column if present
+if 'Id' in df.columns:
+    df = df.drop(columns=['Id'])
+
+# Step 2: Separate Features and Target
+X = df.drop('Species', axis=1)
+y = df['Species']
+
+# Step 3: Normalize Features
+scaler = MinMaxScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Step 4: Train-Test Split
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Step 5: KNN Classifier
+knn = KNeighborsClassifier(n_neighbors=3)
+knn.fit(X_train, y_train)
+
+# Step 6: Prediction and Evaluation
+y_pred = knn.predict(X_test)
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
