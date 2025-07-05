@@ -1,0 +1,39 @@
+Use the Elbow Method to find optimal K.
+
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+# Step 1: Load dataset
+df = pd.read_csv("Mall_Customers.csv")
+
+# Step 2: Drop CustomerID
+if 'CustomerID' in df.columns:
+    df = df.drop('CustomerID', axis=1)
+
+# Step 3: Encode 'Gender'
+df['Gender'] = df['Gender'].map({'Male': 0, 'Female': 1})
+
+# Step 4: Standardize features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(df)
+
+# Step 5: Elbow Method - calculate inertia (WCSS) for k = 1 to 10
+inertia = []
+K_range = range(1, 11)
+
+for k in K_range:
+    kmeans = KMeans(n_clusters=k, random_state=42)
+    kmeans.fit(X_scaled)
+    inertia.append(kmeans.inertia_)  # Inertia = WCSS (Within-Cluster Sum of Squares)
+
+# Step 6: Plot Elbow Curve
+plt.figure(figsize=(8, 5))
+plt.plot(K_range, inertia, marker='o', linestyle='--')
+plt.title("🔍 Elbow Method for Optimal K")
+plt.xlabel("Number of Clusters (K)")
+plt.ylabel("Inertia (WCSS)")
+plt.xticks(K_range)
+plt.grid(True)
+plt.show()
