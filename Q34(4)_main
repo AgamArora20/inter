@@ -1,0 +1,39 @@
+Visualize clusters with color-coding.
+
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Step 1: Load dataset
+df = pd.read_csv("Mall_Customers.csv")
+
+# Step 2: Preprocessing
+if 'CustomerID' in df.columns:
+    df = df.drop('CustomerID', axis=1)
+
+df['Gender'] = df['Gender'].map({'Male': 0, 'Female': 1})
+
+# Step 3: Standardize features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(df)
+
+# Step 4: Fit KMeans
+k = 5  # Use optimal K from Elbow method
+kmeans = KMeans(n_clusters=k, random_state=42)
+df['Cluster'] = kmeans.fit_predict(X_scaled)
+
+# Step 5: Visualize Clusters (Age vs Spending Score)
+plt.figure(figsize=(10, 6))
+sns.scatterplot(
+    x='Age', y='Spending Score (1-100)', 
+    hue='Cluster', palette='viridis', 
+    data=df, s=100, edgecolor='k'
+)
+plt.title("🧠 Customer Segments by Age vs Spending Score")
+plt.xlabel("Age")
+plt.ylabel("Spending Score (1-100)")
+plt.legend(title='Cluster')
+plt.grid(True)
+plt.show()
