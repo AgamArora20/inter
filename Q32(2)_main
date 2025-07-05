@@ -1,0 +1,38 @@
+Fit K-Means and Assign Clusters
+
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+
+# Step 1: Load dataset
+df = pd.read_csv("Mall_Customers.csv")
+
+# Step 2: Drop CustomerID if present
+if 'CustomerID' in df.columns:
+    df = df.drop('CustomerID', axis=1)
+
+# Step 3: Encode 'Gender'
+df['Gender'] = df['Gender'].map({'Male': 0, 'Female': 1})
+
+# Step 4: Standardize the data
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(df)
+
+# Step 5: Fit K-Means (let's assume k=5 for now)
+kmeans = KMeans(n_clusters=5, random_state=42)
+df['Cluster'] = kmeans.fit_predict(X_scaled)
+
+# Step 6: Show few rows
+print("✅ Clustered Data:")
+print(df.head())
+
+# Optional: Plot clusters using first 2 features (e.g., Age & Spending Score)
+plt.figure(figsize=(8, 6))
+plt.scatter(df['Age'], df['Spending Score (1-100)'], c=df['Cluster'], cmap='viridis', edgecolor='k', s=70)
+plt.xlabel("Age")
+plt.ylabel("Spending Score (1-100)")
+plt.title("🧠 K-Means Clustering: Age vs Spending Score")
+plt.colorbar(label="Cluster Label")
+plt.grid(True)
+plt.show()
